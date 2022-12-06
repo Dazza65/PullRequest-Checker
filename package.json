@@ -21,8 +21,11 @@
     "typescript": "4.9.3"
   },
   "dependencies": {
+    "@aws-sdk/client-codecommit": "^3.223.0",
+    "@aws-sdk/types": "^3.222.0",
     "aws-cdk-lib": "^2.51.1",
     "constructs": "^10.0.0",
-    "source-map-support": "^0.5.21"
+    "source-map-support": "^0.5.21",
+    "time-stamp": "^2.2.0"
   }
 }
