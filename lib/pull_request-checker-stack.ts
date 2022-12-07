@@ -33,13 +33,13 @@ export class PullRequestCheckerStack extends cdk.Stack {
       })]
     }));
 
-    const prCheck = new NodejsFunction(this, 'check', {
+    const prCommentFunc = new NodejsFunction(this, 'prcomment', {
       description: 'Updates CodeCommit PullRequest activity with details of build',
-      functionName: 'prCheck',
+      functionName: 'PullRequestPostComment',
       runtime: Runtime.NODEJS_16_X
     });
 
-    prCheck.addToRolePolicy(new PolicyStatement({
+    prCommentFunc.addToRolePolicy(new PolicyStatement({
       actions: [ 'codecommit:PostCommentForPullRequest' ],
       resources: [ codeRepository.repositoryArn ]
     }));
@@ -88,7 +88,7 @@ export class PullRequestCheckerStack extends cdk.Stack {
       })
     });
 
-    prStateChange.addTarget(new LambdaFunction(prCheck));
+    prStateChange.addTarget(new LambdaFunction(prCommentFunc));
 
     pullRequestCodeBuildProject.onStateChange('prCodeBuild', {
       description: 'Triggers the lamdba function to push a comment to the PR activity',
@@ -101,7 +101,7 @@ export class PullRequestCheckerStack extends cdk.Stack {
           'project-name': [pullRequestCodeBuildProject.projectName]
         }
       },
-      target: new LambdaFunction(prCheck)
+      target: new LambdaFunction(prCommentFunc)
     });
   }
 }
