@@ -70,11 +70,8 @@ var parseCodeBuildEvent = (event: any) => {
 exports.handler =  async function(event: any) {
     console.log(JSON.stringify(event));
     if (event.source === "aws.codecommit") {
-      const params = parseCodeCommitEvent(event);
-      await postComment(params);
+      await postComment(parseCodeCommitEvent(event));
     } else if (event.source === "aws.codebuild") {
-        const params = parseCodeBuildEvent(event);
-        await postComment(params);
+        await postComment(parseCodeBuildEvent(event));
     }
   }
-  
