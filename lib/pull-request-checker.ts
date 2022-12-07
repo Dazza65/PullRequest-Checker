@@ -8,18 +8,22 @@ import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
 import { RuleTargetInput, EventField } from 'aws-cdk-lib/aws-events';
 
-export class PullRequestCheckerStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
-    super(scope, id, props);
+export interface PullRequestCheckerProps {
+  repositoryName: string
+}
 
-    const codeRepository = Repository.fromRepositoryName(this, 'CodeRepository', 'prj1ex');
+export class PullRequestChecker extends Construct {
+  constructor(scope: Construct, id: string, props: PullRequestCheckerProps) {
+    super(scope, id);
+
+    const codeRepository = Repository.fromRepositoryName(this, 'CodeRepository', props.repositoryName);
 
     const pullRequestCodeBuildProject = new Project(this, 'PRCodeBuildPrj', {
       environment: {
         computeType: ComputeType.SMALL,
         buildImage: LinuxArmBuildImage.AMAZON_LINUX_2_STANDARD_2_0
       },
-      projectName: 'prj1ex-pr',
+      projectName: `PullRequestChecker-${props.repositoryName}`,
       description: 'Builds the project triggered by the CodeCommit Pull Request',
       source: Source.codeCommit({
         repository: codeRepository
