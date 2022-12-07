@@ -31,6 +31,7 @@ var parseCodeBuildEvent = (event: any) => {
     let pullRequestId = "";
     let repositoryName = "";
     let content = "";
+
     const envVars = event.detail["additional-information"].environment["environment-variables"];
     for (let envVar in envVars) {
       if (envVars[envVar].name === "sourceCommit") {
@@ -50,15 +51,13 @@ var parseCodeBuildEvent = (event: any) => {
     const badgeUrl = `https://${s3_prefix}.amazonaws.com/codefactory-${event.region}-prod-default-build-badges`;
     const failing = `${badgeUrl}/failing.svg`;
     const passing = `${badgeUrl}/passing.svg`;
-    for (let phase in event.detail["additional-information"].phases) {
-      if (event.detail["additional-information"].phases[phase]["phase-status"] == "FAILED") {
-        content = `![Failing][Badge] - See the [Logs](${event["detail"]["additional-information"]["logs"]["deep-link"]})\r
-  [Badge]: ${failing} "Failing"`;
-      } else {
-        content = `![Passing][Badge] - See the [Logs](${event["detail"]["additional-information"]["logs"]["deep-link"]})\r
-  [Badge]: ${passing} "Passing"`;
-      }
+    
+    if (event.detail['build-status'] == "FAILED") {
+        content = `![Failing][Badge] - See the [Logs](${event.detail["additional-information"]["logs"]["deep-link"]})\r[Badge]: ${failing} "Failing"`;
+    } else {
+        content = `![Passing][Badge] - See the [Logs](${event.detail["additional-information"]["logs"]["deep-link"]})\r[Badge]: ${passing} "Passing"`;
     }
+
     return {
       beforeCommitId,
       afterCommitId,
@@ -78,3 +77,4 @@ exports.handler =  async function(event: any) {
         await postComment(params);
     }
   }
+  
