@@ -1,7 +1,18 @@
 import { CodeCommitClient, PostCommentForPullRequestCommand } from '@aws-sdk/client-codecommit';
-import timestamp from 'time-stamp';
 
 const codeCommitClient = new CodeCommitClient({region: `${process.env.AWS_REGION}`});
+
+const padTo2Digits = (num: number) => {
+  return num.toString().padStart(2, '0');
+}
+
+const timestamp = (date = new Date()) => {
+  return [
+    padTo2Digits(date.getUTCHours()),
+    padTo2Digits(date.getUTCMinutes()),
+    padTo2Digits(date.getUTCSeconds()),
+  ].join(':');
+}
 
 const postComment = async (params: any) => {
     const command = new PostCommentForPullRequestCommand(params);
@@ -14,7 +25,7 @@ const postComment = async (params: any) => {
 };
 
 const parseCodeCommitEvent = (event: any) => {
-    const formattedDate = timestamp('HH:mm:ss');
+    const formattedDate = timestamp();
 
     return {
       beforeCommitId: event.detail.sourceCommit,
