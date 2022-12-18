@@ -1,7 +1,11 @@
 {
   "name": "pull-request-checker",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dazza65/PullRequest-Checker"
+  },
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
