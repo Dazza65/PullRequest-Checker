@@ -1,7 +1,6 @@
 import { App, Stack } from 'aws-cdk-lib';
-import { Match, Template } from 'aws-cdk-lib/assertions';
+import { Template } from 'aws-cdk-lib/assertions';
 import { PullRequestChecker } from '../src/pull-request-checker';
-
 
 test('PullRequestChecker has a CodeBuild project with the specified name', () => {
   const stack = new Stack(new App());

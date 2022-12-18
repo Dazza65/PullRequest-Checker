@@ -1,9 +1,7 @@
 {
-  "name": "pull_request-checker",
-  "version": "0.1.0",
-  "bin": {
-    "pull_request-checker": "bin/pull_request-checker.js"
-  },
+  "name": "pull-request-checker",
+  "version": "0.1.1",
+  "main": "src/index.js",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",

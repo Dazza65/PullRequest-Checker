@@ -1,4 +1,4 @@
-import * as cdk from 'aws-cdk-lib';
+import {join } from 'path';
 import { Construct } from 'constructs';
 import { Repository } from 'aws-cdk-lib/aws-codecommit';
 import { Project, ComputeType, LinuxArmBuildImage, Source } from 'aws-cdk-lib/aws-codebuild';
